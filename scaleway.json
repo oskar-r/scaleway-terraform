@@ -1,0 +1,36 @@
+{
+  	"variables": {
+    	"organization_id": "",
+    	"api_token": "",
+		"ssh_key": "",
+		"domain_name": ""
+  	},
+  	"builders": [{
+    	"type": "scaleway",
+    	"organization_id": "{{user `organization_id`}}",
+    	"api_token": "{{user `api_token`}}",
+    	"server_name": "{{user `domain_name`}}",
+	"image_name": "my-ubuntu",
+      	"snapshot_name": "my-ubuntu-base",
+      	"image": "9444d178-2285-4842-ac35-5e86eda8da91",
+      	"region": "ams1",
+      	"commercial_type": "DEV1-S",
+        "ssh_private_key_file": "{{user `ssh_key`}}",
+        "ssh_username": "root"
+  	}],
+  	"provisioners": [{   
+    	"type": "shell",
+     	"inline": [
+			"sleep 30",
+			"apt-get update",
+			"DEBIAN_FRONTEND=noninteractive apt-get -y upgrade",
+			"apt-get -y upgrade",
+			"apt install -y apt-transport-https ca-certificates curl software-properties-common",
+			"curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -",
+			"add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable\"",
+			"apt update",
+			"apt-cache policy docker-ce",
+			"apt install -y docker-ce"
+     	]   
+   	}]
+}

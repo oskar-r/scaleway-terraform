@@ -1,0 +1,32 @@
+defaultEntryPoints = ["http", "https"]
+[web]
+address = ":8080"
+  [web.auth.basic]
+  users = ["admin:secure_pwd"]
+
+[retry]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+  [entryPoints.https.tls]
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "domainname"
+watch = true
+exposedByDefault = false
+
+[acme]
+email = "my_email"
+storage = "acme.json"
+entryPoint = "https"
+onHostRule = true
+[[acme.domains]]
+  main = "domainname"
+[acme.httpChallenge]
+  entryPoint = "http"
